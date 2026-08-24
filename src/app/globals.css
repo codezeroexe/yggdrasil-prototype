@@ -2812,16 +2812,16 @@ body::after {
   left: 50%;
   z-index: 0;
   margin: 0;
-  color: rgba(0, 255, 135, 0.5);
+  color: rgba(0, 255, 135, 0.72);
   font-size: 1.34vw;
   line-height: 1.05;
   letter-spacing: -0.14em;
   transform: translate(-50%, -50%);
   opacity: 0.11;
   text-shadow:
-    0 0 6px rgba(0, 255, 135, 0.6),
-    0 0 22px rgba(0, 255, 135, 0.4),
-    0 0 60px rgba(0, 255, 135, 0.22);
+    0 0 6px rgba(0, 255, 135, 0.75),
+    0 0 22px rgba(0, 255, 135, 0.5),
+    0 0 60px rgba(0, 255, 135, 0.28);
   animation:
     art-fade 1.8s ease-out both,
     art-flicker 3.7s infinite steps(1);
