@@ -23,7 +23,14 @@ Open `http://localhost:3000` and press any key to wake the terminal.
 
 - Next.js (App Router) + React + TypeScript
 - Tailwind CSS v4 with a custom terminal design system in `globals.css`
-- Client-side state only (localStorage): team, members, solved fragments, session clock, admin flag
+- Cookie session + `proxy.ts` route gating: no URL access without an active session, reloads persist, logout clears everything
+- Vercel KV (Upstash) for shared cell state: live-session heartbeats, scores, and admin overrides — with an in-memory fallback when unconfigured
+
+## Hosting on Vercel
+
+1. Push the repo and import it into Vercel — no extra config needed to build.
+2. In the Vercel dashboard, open the project → **Storage** → create a **KV (Upstash)** database and connect it to the project. This injects `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically.
+3. Redeploy. Without KV configured the app still runs, but the admin console cannot see or control remote cells (each instance falls back to isolated in-memory state).
 
 ## Scope notes
 

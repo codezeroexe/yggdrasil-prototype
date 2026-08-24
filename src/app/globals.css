@@ -2718,3 +2718,59 @@ body::after {
       0 100vh;
   }
 }
+
+/* ---- session chrome ---- */
+.logout-button {
+  margin-left: 18px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: #66726a;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.logout-button:hover {
+  color: #ff5546;
+  border-color: #ff5546;
+}
+.score-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.score-control b {
+  min-width: 52px;
+  color: var(--green);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.score-control button {
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: #87978c;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.score-control button:hover {
+  color: var(--green);
+  border-color: var(--green);
+}
+.score-control button.danger:hover {
+  color: #ff5546;
+  border-color: #ff5546;
+}
+.score-control input {
+  width: 58px;
+  padding: 5px 8px !important;
+  border: 1px solid var(--line) !important;
+  background: #000 !important;
+  color: #eff8f1 !important;
+  font-size: 9px;
+}

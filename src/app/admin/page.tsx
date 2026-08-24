@@ -9,15 +9,56 @@ export default function AdminPage() {
   const [team, setTeam] = useState("TEAM UNNAMED");
   const [members, setMembers] = useState("5");
   const [solved, setSolved] = useState<string[]>([]);
+  const [cells, setCells] = useState<
+    Array<{
+      team: string;
+      members: string;
+      score: number;
+      solved: number;
+      online: boolean;
+    }>
+  >([]);
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
   useEffect(() => {
-    if (!localStorage.getItem("yggdrasil-admin")) {
-      window.location.href = "/";
-      return;
-    }
-    setTeam(localStorage.getItem("yggdrasil-team") ?? "TEAM UNNAMED");
-    setMembers(localStorage.getItem("yggdrasil-members") ?? "5");
-    setSolved(JSON.parse(localStorage.getItem("yggdrasil-solved") ?? "[]"));
+    fetch("/api/session")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.session?.admin) {
+          window.location.href = "/dashboard";
+          return;
+        }
+        setTeam(localStorage.getItem("yggdrasil-team") ?? "TEAM UNNAMED");
+        setMembers(localStorage.getItem("yggdrasil-members") ?? "5");
+        setSolved(JSON.parse(localStorage.getItem("yggdrasil-solved") ?? "[]"));
+      })
+      .catch(() => {
+        window.location.href = "/";
+      });
   }, []);
+  useEffect(() => {
+    const load = () =>
+      fetch("/api/cells")
+        .then((res) => res.json())
+        .then((data) => setCells(data.cells ?? []))
+        .catch(() => {});
+    load();
+    const poll = window.setInterval(load, 4000);
+    return () => window.clearInterval(poll);
+  }, []);
+  function patchCell(team: string, score: number) {
+    fetch("/api/cells", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ team, score }),
+    }).catch(() => {});
+  }
+  function resetCell(team: string) {
+    fetch("/api/cells", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ team, reset: true }),
+    }).catch(() => {});
+  }
   const progress = Math.round((solved.length / tasks.length) * 100);
   function resetSession() {
     localStorage.removeItem("yggdrasil-solved");
@@ -58,6 +99,90 @@ export default function AdminPage() {
       </section>
 
       <section className="admin-sections">
+        <div className="admin-panel">
+          <div className="terminal-label">// LIVE CELLS / ACTIVE SESSIONS</div>
+          <div className="admin-grid">
+            <div className="table-head">
+              <span>STATUS</span>
+              <span>CELL</span>
+              <span>SOLVED</span>
+              <span>SCORE CONTROL</span>
+            </div>
+            {cells.length === 0 && (
+              <div className="admin-row">
+                <span>—</span>
+                <div className="admin-task">
+                  <strong>NO SESSIONS DETECTED</strong>
+                  <small>waiting for cells to register…</small>
+                </div>
+                <small>—</small>
+                <b>—</b>
+              </div>
+            )}
+            {cells.map((cell) => (
+              <div className="admin-row" key={cell.team}>
+                <span className={cell.online ? "green" : ""}>
+                  {cell.online ? "● ONLINE" : "○ OFFLINE"}
+                </span>
+                <div className="admin-task">
+                  <strong>{cell.team}</strong>
+                  <small>{cell.members} OPERATORS</small>
+                </div>
+                <small>{cell.solved} / 5</small>
+                <div className="score-control">
+                  <b>{cell.score}</b>
+                  <button
+                    type="button"
+                    onClick={() => patchCell(cell.team, cell.score - 25)}
+                    aria-label={`deduct 25 from ${cell.team}`}
+                  >
+                    -25
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => patchCell(cell.team, cell.score + 25)}
+                    aria-label={`add 25 to ${cell.team}`}
+                  >
+                    +25
+                  </button>
+                  <input
+                    value={drafts[cell.team] ?? ""}
+                    placeholder="set"
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      setDrafts((current) => ({
+                        ...current,
+                        [cell.team]: event.target.value,
+                      }))
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const parsed = Number(drafts[cell.team]);
+                      if (Number.isFinite(parsed))
+                        patchCell(cell.team, parsed);
+                      setDrafts((current) => ({
+                        ...current,
+                        [cell.team]: "",
+                      }));
+                    }}
+                  >
+                    SET
+                  </button>
+                  <button
+                    type="button"
+                    className="danger"
+                    onClick={() => resetCell(cell.team)}
+                  >
+                    RESET
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="admin-panel">
           <div className="terminal-label">// SESSION</div>
           <div className="admin-session">

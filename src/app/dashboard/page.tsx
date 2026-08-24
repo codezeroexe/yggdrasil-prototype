@@ -17,7 +17,10 @@ export default function Dashboard() {
     setTeam(localStorage.getItem("yggdrasil-team") ?? "TEAM UNNAMED");
     setMembers(localStorage.getItem("yggdrasil-members") ?? "5");
     setSolved(JSON.parse(localStorage.getItem("yggdrasil-solved") ?? "[]"));
-    setAdmin(Boolean(localStorage.getItem("yggdrasil-admin")));
+    fetch("/api/session")
+      .then((res) => res.json())
+      .then((data) => setAdmin(Boolean(data.session?.admin)))
+      .catch(() => {});
     const start = Number(
       localStorage.getItem("yggdrasil-start") ?? Date.now(),
     );
@@ -36,7 +39,18 @@ export default function Dashboard() {
     const tick = () => setElapsed(Date.now() - start);
     tick();
     const timer = window.setInterval(tick, 1000);
-    return () => window.clearInterval(timer);
+    const beat = () =>
+      fetch("/api/heartbeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ solved }),
+      }).catch(() => {});
+    beat();
+    const hb = window.setInterval(beat, 20_000);
+    return () => {
+      window.clearInterval(timer);
+      window.clearInterval(hb);
+    };
   }, []);
   const progress = Math.round((solved.length / tasks.length) * 100);
   const complete = solved.length === tasks.length;
@@ -53,6 +67,14 @@ export default function Dashboard() {
   const masterKey = `MIDGARD-ROOT :: ${tasks
     .map((task) => task.fragment.replace("MID-", ""))
     .join(" · ")}`;
+  function logout() {
+    ["yggdrasil-team", "yggdrasil-members", "yggdrasil-solved", "yggdrasil-start", "yggdrasil-end", "yggdrasil-admin"].forEach((k) =>
+      localStorage.removeItem(k),
+    );
+    fetch("/api/session", { method: "DELETE" }).finally(() =>
+      window.location.href = "/",
+    );
+  }
   return (
     <main className="terminal-page fragment-dashboard">
       <header className="terminal-header">
@@ -67,6 +89,13 @@ export default function Dashboard() {
             {team} // {members} OPERATORS
           </span>
         )}
+        <button
+          type="button"
+          className="logout-button"
+          onClick={logout}
+        >
+          LOGOUT
+        </button>
       </header>
 
       <section className="map-head">

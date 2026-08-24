@@ -93,7 +93,11 @@ export default function Onboarding() {
       if (/^odin\s*\d{4,5}$/.test(normalized)) {
         setError("");
         localStorage.setItem("yggdrasil-admin", "odin");
-        router.push("/admin");
+        fetch("/api/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ team: "ODIN", members: "1", admin: true }),
+        }).finally(() => router.push("/admin"));
         return;
       }
       if (!normalized.startsWith("c") && !normalized.startsWith("r")) {
@@ -153,7 +157,15 @@ export default function Onboarding() {
       step === "members" ? finalValue : "5",
     );
     localStorage.setItem("yggdrasil-solved", JSON.stringify([]));
-    router.push("/dashboard");
+    fetch("/api/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        team: team.toUpperCase(),
+        members: step === "members" ? finalValue : "5",
+        admin: false,
+      }),
+    }).finally(() => router.push("/dashboard"));
   }
   return (
     <main className="onboarding">

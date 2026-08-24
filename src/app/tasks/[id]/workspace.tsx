@@ -57,14 +57,23 @@ export default function TaskWorkspace({ task }: { task: Task }) {
         "yggdrasil-solved",
         JSON.stringify([...current, task.id]),
       );
-      if (current.length + 1 === tasks.length)
+      const next = [...current, task.id];
+      if (next.length === tasks.length)
         localStorage.setItem("yggdrasil-end", String(Date.now()));
+      fetch("/api/heartbeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ solved: next }),
+      }).catch(() => {});
     }
     setSolved(true);
     setMessage(`ACCEPTED // FRAGMENT ${task.fragment} ADDED TO TEAM BUFFER`);
   }
   useEffect(() => {
-    setAdmin(Boolean(localStorage.getItem("yggdrasil-admin")));
+    fetch("/api/session")
+      .then((res) => res.json())
+      .then((data) => setAdmin(Boolean(data.session?.admin)))
+      .catch(() => {});
   }, []);
 
   const artifactLines = task.artifact.split("\n").filter((line) => line.trim().length > 0);
