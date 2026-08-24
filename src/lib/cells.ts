@@ -14,7 +14,8 @@ const ONLINE_WINDOW_MS = 60_000;
 const memory = new Map<string, Cell>();
 
 export const kvEnabled = Boolean(
-  process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN,
+  (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
+    (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN),
 );
 
 const key = (team: string) => `cell:${team.toLowerCase()}`;
