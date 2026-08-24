@@ -82,7 +82,7 @@ export default function TaskWorkspace({ task }: { task: Task }) {
     <main className="workspace task-workspace">
       <header className="terminal-header">
         <Link href="/dashboard" className="brand">
-          <span className="brand-mark">Y</span> YGGDRASIL
+          <span className="brand-mark">ᛦ</span> YGGDRASIL
         </Link>
         <span>TASK {task.id} / MIDGARD</span>
         <span>TEAM CHANNEL // ACTIVE</span>

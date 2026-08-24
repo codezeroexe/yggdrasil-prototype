@@ -41,7 +41,7 @@ export default function ScoreboardPage() {
     <main className="terminal-page scoreboard-page">
       <header className="terminal-header">
         <Link href="/dashboard" className="brand">
-          <span className="brand-mark">Y</span> YGGDRASIL
+          <span className="brand-mark">ᛦ</span> YGGDRASIL
         </Link>
         <span>TEAM TELEMETRY / LIVE</span>
         <span>ROUND 01 // MIDGARD</span>

@@ -2804,3 +2804,29 @@ body::after {
   color: #66726a;
   font-weight: 400;
 }
+
+/* ---- ascii backdrop ---- */
+.backdrop-art {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  margin: 0;
+  color: var(--green);
+  font-size: 13px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0.09;
+  pointer-events: none;
+  user-select: none;
+  animation: art-fade 1.8s ease-out both;
+}
+@keyframes art-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.09;
+  }
+}

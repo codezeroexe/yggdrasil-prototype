@@ -82,7 +82,7 @@ export default function AdminPage() {
     <main className="terminal-page admin-page">
       <header className="terminal-header">
         <Link href="/dashboard" className="brand">
-          <span className="brand-mark">Y</span> YGGDRASIL
+          <span className="brand-mark">ᛦ</span> YGGDRASIL
         </Link>
         <span>ROOT CHANNEL // RESTRICTED</span>
         <span className="window-state">CLEARANCE: ODIN</span>

@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { RUNE, TREE_ART } from "../lib/art";
 
 type Step = "mode" | "name" | "members" | "code";
 type Transcript = { question: string; response: string };
@@ -61,6 +62,9 @@ export default function Onboarding() {
     return (
       <main className="onboarding onboarding-wake">
         <div className="onboarding-grid" />
+        <pre className="backdrop-art" aria-hidden>
+          {TREE_ART}
+        </pre>
         <p className="wake-text">PRESS ANY KEY</p>
       </main>
     );
@@ -170,9 +174,12 @@ export default function Onboarding() {
   return (
     <main className="onboarding">
       <div className="onboarding-grid" />
+      <pre className="backdrop-art" aria-hidden>
+        {TREE_ART}
+      </pre>
       <section className="boot-window conversation">
         <header>
-          <span className="brand-mark">Y</span>
+          <span className="brand-mark">{RUNE}</span>
           <span>YGGDRASIL AI // CONTAINMENT TERMINAL</span>
           <span className="window-state">SESSION: {step.toUpperCase()}</span>
         </header>

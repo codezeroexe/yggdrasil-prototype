@@ -79,7 +79,7 @@ export default function Dashboard() {
     <main className="terminal-page fragment-dashboard">
       <header className="terminal-header">
         <Link href="/" className="brand">
-          <span className="brand-mark">Y</span> YGGDRASIL
+          <span className="brand-mark">ᛦ</span> YGGDRASIL
         </Link>
         <span>DEMO ROUND 01 / MIDGARD</span>
         {admin ? (
