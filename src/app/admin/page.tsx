@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { tasks } from "../../lib/tasks";
-import { teams } from "../../lib/teams";
 
 export default function AdminPage() {
   const [team, setTeam] = useState("TEAM UNNAMED");
@@ -251,17 +250,30 @@ export default function AdminPage() {
             <div className="table-head">
               <span>RANK</span>
               <span>CELL</span>
-              <span>PROGRESS</span>
+              <span>STATUS</span>
               <span>SCORE</span>
             </div>
-            {teams.map(([rank, name, score, prog]) => (
-              <div className="admin-row" key={name}>
-                <span>{rank}</span>
+            {cells.length === 0 && (
+              <div className="admin-row">
+                <span>—</span>
                 <div className="admin-task">
-                  <strong>{name}</strong>
+                  <strong>NO CELLS REGISTERED</strong>
                 </div>
-                <small>{prog}</small>
-                <b>{score} PTS</b>
+                <small>—</small>
+                <b>—</b>
+              </div>
+            )}
+            {cells.map((cell) => (
+              <div className="admin-row" key={cell.team}>
+                <span>{cell.online ? "●" : "○"}</span>
+                <div className="admin-task">
+                  <strong>{cell.team}</strong>
+                  <small>{cell.members} OPERATORS</small>
+                </div>
+                <small className={cell.online ? "green" : ""}>
+                  {cell.online ? "ONLINE" : "OFFLINE"}
+                </small>
+                <b>{cell.score} PTS</b>
               </div>
             ))}
           </div>

@@ -7,6 +7,7 @@ export type Cell = {
   lastSeen: number;
   admin: boolean;
   active: boolean;
+  finishedAt?: number;
 };
 
 const ONLINE_WINDOW_MS = 60_000;

@@ -2774,3 +2774,33 @@ body::after {
   color: #eff8f1 !important;
   font-size: 9px;
 }
+
+/* ---- live leaderboard ---- */
+.standing {
+  grid-template-columns: 60px 1fr auto auto auto;
+}
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(0, 255, 135, 0.6);
+  animation: caret-pulse 1.6s ease-in-out infinite;
+  vertical-align: 1px;
+}
+.finished-mark {
+  color: var(--green);
+  font-size: 8px;
+  font-style: normal;
+  letter-spacing: 0.12em;
+}
+.standing .mono {
+  font-variant-numeric: tabular-nums;
+  color: #87978c;
+}
+.empty-standing strong {
+  color: #66726a;
+  font-weight: 400;
+}

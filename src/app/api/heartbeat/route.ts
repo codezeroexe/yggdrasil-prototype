@@ -31,6 +31,10 @@ export async function POST(request: Request) {
     ...cell,
     solved,
     score,
+    finishedAt:
+      solved.length === tasks.length
+        ? (cell.finishedAt ?? Date.now())
+        : undefined,
     lastSeen: Date.now(),
   });
   return NextResponse.json({ ok: true, score, solved });
