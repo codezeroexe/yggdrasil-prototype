@@ -698,7 +698,7 @@ nav a:hover {
 .onboarding-grid {
   position: absolute;
   inset: 0;
-  opacity: 0.16;
+  opacity: 0.11;
   background-image:
     linear-gradient(90deg, transparent 49%, #16412c 50%, transparent 51%),
     linear-gradient(transparent 49%, #16412c 50%, transparent 51%);
@@ -2813,11 +2813,18 @@ body::after {
   z-index: 0;
   margin: 0;
   color: var(--green);
-  font-size: 13px;
-  line-height: 1.05;
+  font-size: 26px;
+  line-height: 1.02;
   letter-spacing: 0;
   transform: translate(-50%, -50%);
-  opacity: 0.09;
+  opacity: 0.11;
+  text-shadow:
+    0 0 6px rgba(0, 255, 135, 0.55),
+    0 0 22px rgba(0, 255, 135, 0.35),
+    0 0 60px rgba(0, 255, 135, 0.22);
+  animation:
+    art-fade 1.8s ease-out both,
+    art-flicker 3.7s infinite steps(1);
   pointer-events: none;
   user-select: none;
   animation: art-fade 1.8s ease-out both;
@@ -2827,6 +2834,30 @@ body::after {
     opacity: 0;
   }
   to {
-    opacity: 0.09;
+    opacity: 0.11;
+  }
+}
+@keyframes art-flicker {
+  0%,
+  100% {
+    opacity: 0.11;
+  }
+  22% {
+    opacity: 0.13;
+  }
+  23% {
+    opacity: 0.18;
+  }
+  57% {
+    opacity: 0.12;
+  }
+  58% {
+    opacity: 0.11;
+  }
+  81% {
+    opacity: 0.19;
+  }
+  82% {
+    opacity: 0.11;
   }
 }
